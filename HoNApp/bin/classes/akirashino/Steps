@@ -1,0 +1,22 @@
+Step one
+[X] design database
+[X] design layout design
+[X] set up tabs
+[X] set up MainActivity
+[X] set up activity_main
+step 2
+[ ] set up DBAdapter
+[X] need to implement new database changes
+[ ] set up image call functions
+step 3
+[ ] set up HeroActivity
+[ ] set up activity_hero
+[ ] set up ItemActivity
+[ ] set up activity_item
+step 4
+[ ] change image names
+[ ] fill database
+[ ] design ability call function
+[ ] set up an extended view for a hero page (not HeroActivity)
+step 5
+[ ] troubleshoot 

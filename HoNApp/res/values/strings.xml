@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">HoN Compendium</string>
+    <string name="title_activity_main">HoNApp</string>
+    <string name="action_settings">Settings</string>
+    <string name="name">dbname</string>
+ 
+   	
+	
+</resources>

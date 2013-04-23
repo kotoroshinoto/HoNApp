@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="javadoc">
+    <target name="javadoc">
+        <javadoc access="private" author="true" classpath="libs/android-sqlite-asset-helper.jar;libs/android-support-v4.jar" destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="akirashino.honapp" source="1.6" sourcepath="src;gen" splitindex="true" use="true" version="true">
+            <link href="file:/e:/adt-bundle-windows-x86_64/adt-bundle-windows-x86_64/sdk/docs/reference"/>
+            <link href="file:/E:/workspace/HoNApp/doc/"/>
+        </javadoc>
+    </target>
+</project>
