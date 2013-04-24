@@ -47,7 +47,7 @@ public class DBAdapter {
 	
 
 	public static final String[] HERO_KEYS = new String[] { KEY_ROWID,
-			KEY_NAME, IMAGE};
+			KEY_NAME, IMAGE, KEY_RESID};
 	public static final String[] IMAGE_KEYS = new String[] { KEY_ROWID, IMAGE};
 	public static final String[] ABILITY_KEYS = new String[] { KEY_ROWID,
 			KEY_NAME, KEY_HERO };
@@ -191,7 +191,7 @@ public class DBAdapter {
 	}
 	
 	public void setHeroImageIDs(){
-		Cursor c = this.getAllHeroImage();
+		Cursor c = this.getAllHero();
 //		ArrayList<String> heroes=new ArrayList<String>();
 		if (c != null){
 			while(!c.isAfterLast()){
@@ -200,10 +200,11 @@ public class DBAdapter {
 				    String imgname=c.getString(c.getColumnIndex("image"));
 				    Field field = res.getField(imgname);
 				    int drawableId = field.getInt(null);
-				    ContentValues vals = new ContentValues();
-				    vals.put("resid", drawableId);
+//				    ContentValues vals = new ContentValues();
+//				    vals.put("resid", drawableId);
 				    
-				    db.update("hero", vals, "image="+imgname, null);
+//				    db.update("hero", vals, "image = "+imgname, null);
+				    db.execSQL("update hero set resid=\""+drawableId+"\" where image= \""+imgname+"\"");
 				}
 				catch (Exception e) {
 				    Log.e("MyTag", "Failure to get drawable id.", e);

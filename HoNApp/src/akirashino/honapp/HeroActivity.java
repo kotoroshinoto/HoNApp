@@ -66,9 +66,9 @@ public class HeroActivity extends Activity {
 		
 		
 		ImageView image = (ImageView) this.findViewById(R.id.icon);
-		Resources res=this.getResources();
-		int id=R.drawable.chronos;
-		
+//		Resources res=this.getResources();
+//		int id=R.drawable.chronos;
+//		
 //		Drawable drw=null;
 //		try{
 //			drw=res.getDrawable(id);
