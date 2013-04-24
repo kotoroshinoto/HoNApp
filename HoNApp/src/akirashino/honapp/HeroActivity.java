@@ -45,7 +45,7 @@ public class HeroActivity extends Activity {
 //		int[] imgViewId = new int[]{};
 		
 		// adapter
-		SimpleCursorAdapter myAdapter = new SimpleCursorAdapter(t
+		SimpleCursorAdapter myAdapter = new SimpleCursorAdapter(
 				this, //context
 				R.layout.list_object, // row template
 				c,
