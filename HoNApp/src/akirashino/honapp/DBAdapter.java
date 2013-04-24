@@ -210,7 +210,7 @@ public class DBAdapter {
 				}
 				c.moveToNext();
 			}
-		} //log an error
+		} //log an error testing crap
 		
 	}
 	// Change an existing row to be equal to new data.
