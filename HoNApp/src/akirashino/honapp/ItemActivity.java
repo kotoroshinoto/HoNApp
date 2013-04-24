@@ -14,6 +14,7 @@ public class ItemActivity extends Activity {
 		TextView textView = new TextView(this);
 		textView.setText("Items");
 		setContentView(textView);
+		
 //		setContentView(R.layout.activity_main);
 		// int resourceId = this.getResources().getIdentifier("testimage",
 		// "drawable", "akirashino.honapp");

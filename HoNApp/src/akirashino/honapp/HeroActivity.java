@@ -28,7 +28,6 @@ public class HeroActivity extends Activity {
 		setContentView(R.layout.activity_hero);
 		openDB();
 		poplistview();
-		
 	}
 
 	@SuppressWarnings("deprecation")
@@ -40,13 +39,13 @@ public class HeroActivity extends Activity {
 //		this.startManagingCursor(c2);
 		// setup mapping from cursor to view
 		
-		String[] fromName = new String[]{DBAdapter.KEY_NAME};
-		String[] imgName = new String[]{DBAdapter.IMAGE};
-		int[] toViewId = new int[]{R.id.name};
-		int[] imgViewId = new int[]{R.id.icon};
+		String[] fromName = new String[]{DBAdapter.KEY_NAME,DBAdapter.KEY_RESID};
+//		String[] imgName = new String[]{};
+		int[] toViewId = new int[]{R.id.name,R.id.icon};
+//		int[] imgViewId = new int[]{};
 		
 		// adapter
-		SimpleCursorAdapter myAdapter = new SimpleCursorAdapter(
+		SimpleCursorAdapter myAdapter = new SimpleCursorAdapter(t
 				this, //context
 				R.layout.list_object, // row template
 				c,
@@ -70,13 +69,13 @@ public class HeroActivity extends Activity {
 		Resources res=this.getResources();
 		int id=R.drawable.chronos;
 		
-		Drawable drw=null;
-		try{
-			drw=res.getDrawable(id);
-		}catch(Resources.NotFoundException e){
-			Log.e("HeroActivity","Unable To Get Drawable for id: "+id);
-		}
-		if(drw != null){image.setImageDrawable(drw);}
+//		Drawable drw=null;
+//		try{
+//			drw=res.getDrawable(id);
+//		}catch(Resources.NotFoundException e){
+//			Log.e("HeroActivity","Unable To Get Drawable for id: "+id);
+//		}
+//		if(drw != null){image.setImageDrawable(drw);}
 //		try {
 //		    Class res = R.drawable.class;
 //		    Field field = res.getField("chronos");
