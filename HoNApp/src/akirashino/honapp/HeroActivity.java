@@ -1,15 +1,13 @@
 package akirashino.honapp;
 
-import java.lang.reflect.Field;
-
 import android.app.Activity;
-import android.content.res.Resources;
+import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.Log;
-import android.widget.ImageView;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 /*
@@ -21,10 +19,9 @@ import android.widget.ListView;
 
 public class HeroActivity extends Activity {
 	DBAdapter myDB;
-	
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		ListView listView = (ListView) findViewById(R.id.listView1);
 		setContentView(R.layout.activity_hero);
 		openDB();
 		poplistview();
@@ -33,58 +30,37 @@ public class HeroActivity extends Activity {
 	@SuppressWarnings("deprecation")
 	private void poplistview() {
 		Cursor c = myDB.getAllHero();
-//		Cursor c2 = myDB.getAllHeroImage();
+
 		// lifetime
-		this.startManagingCursor(c);		
-//		this.startManagingCursor(c2);
+		this.startManagingCursor(c);
+
 		// setup mapping from cursor to view
-		
-		String[] fromName = new String[]{DBAdapter.KEY_NAME,DBAdapter.KEY_RESID};
-//		String[] imgName = new String[]{};
-		int[] toViewId = new int[]{R.id.name,R.id.icon};
-//		int[] imgViewId = new int[]{};
-		
+
+		String[] fromName = new String[] { DBAdapter.KEY_NAME,
+				DBAdapter.KEY_RESID };
+
+		int[] toViewId = new int[] { R.id.name, R.id.icon };
+
 		// adapter
-		SimpleCursorAdapter myAdapter = new SimpleCursorAdapter(
-				this, //context
+		SimpleCursorAdapter myAdapter = new SimpleCursorAdapter(this, // context
 				R.layout.list_object, // row template
-				c,
-				fromName,
-				toViewId
-				);
-//		SimpleCursorAdapter imgAdapter = new SimpleCursorAdapter(
-//				this, //context
-//				R.layout.list_object, // row template
-//				c2,
-//				imgName,
-//				imgViewId
-//				);
-		// Set Adapter
-		ListView list = (ListView) this.findViewById(R.id.listView1);
+				c, fromName, toViewId);
+
+		ListView list = (ListView) this.findViewById(R.id.itemlist);
 		list.setAdapter(myAdapter);
-		
-		
-		
-		ImageView image = (ImageView) this.findViewById(R.id.icon);
-//		Resources res=this.getResources();
-//		int id=R.drawable.chronos;
-//		
-//		Drawable drw=null;
-//		try{
-//			drw=res.getDrawable(id);
-//		}catch(Resources.NotFoundException e){
-//			Log.e("HeroActivity","Unable To Get Drawable for id: "+id);
-//		}
-//		if(drw != null){image.setImageDrawable(drw);}
-//		try {
-//		    Class res = R.drawable.class;
-//		    Field field = res.getField("chronos");
-//		    int drawableId = field.getInt(null);
-//		    image.setImageResource(drawableId);
-//		}
-//		catch (Exception e) {
-//		    Log.e("MyTag", "Failure to get drawable id.", e);
-//		}
+		list.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				Cursor c = myDB.getAllHero();
+				Intent in = new Intent(HeroActivity.this, HeroObjectActivity.class);
+				
+			    in.putExtra("_id",arg2+1);
+			    startActivity(in);
+				
+			}
+		});
 	}
 
 	private void openDB() {
@@ -99,6 +75,6 @@ public class HeroActivity extends Activity {
 
 	private void closeDB() {
 		myDB.close();
-		
+
 	}
 }

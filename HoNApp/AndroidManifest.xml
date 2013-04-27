@@ -24,6 +24,8 @@
         </activity>
     	<activity android:name=".HeroActivity" />
     	<activity android:name=".ItemActivity" />
+    	<activity android:name=".HeroObjectActivity" />
+    	<activity android:name=".ItemObjectActivity" />
     </application>
 
 </manifest>

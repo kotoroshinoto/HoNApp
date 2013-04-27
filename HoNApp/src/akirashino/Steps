@@ -7,7 +7,7 @@ Step one
 step 2
 [ ] set up DBAdapter
 [X] need to implement new database changes
-[ ] set up image call functions
+[X] set up image call functions
 step 3
 [ ] set up HeroActivity
 [ ] set up activity_hero
@@ -20,11 +20,3 @@ step 4
 [ ] set up an extended view for a hero page (not HeroActivity)
 step 5
 [ ] troubleshoot
-
-
-???
-
-profit
-
-
-http://developer.android.com/reference/android/widget/ListAdapter.html 

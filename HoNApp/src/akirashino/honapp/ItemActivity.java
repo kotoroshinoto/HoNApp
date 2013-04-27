@@ -1,73 +1,76 @@
 package akirashino.honapp;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.support.v4.widget.SimpleCursorAdapter;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class ItemActivity extends Activity {
 
-	DBAdapter myDb;
+	DBAdapter myDB;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		TextView textView = new TextView(this);
-		textView.setText("Items");
-		setContentView(textView);
+		setContentView(R.layout.activity_item);
+		openDB();
+		poplistview();
 		
-//		setContentView(R.layout.activity_main);
-		// int resourceId = this.getResources().getIdentifier("testimage",
-		// "drawable", "akirashino.honapp");
-
-		// openDB();
 	}
-	// @Override
-	// protected void onDestroy() {
-	// super.onDestroy();
-	// closeDB();
-	// }
-	//
-	//
-	// private void openDB() {
-	// myDb = new DBAdapter(this);
-	// myDb.open();
-	// }
-	// private void closeDB() {
-	// myDb.close();
-	// }
-	//
-	// public void onClick_DisplayRecords(View v) {
-	//
-	// Cursor cursor = myDb.getAllRowsItem();
-	// displayRecordSetItem(cursor);
-	// }
-	//
-	// // Display an entire recordset to the screen.
-	// private void displayRecordSetItem(Cursor cursor) {
-	// String message = "";
-	// // populate the message from the cursor
-	//
-	// // Reset cursor to start, checking to see if there's data:
-	// if (cursor.moveToFirst()) {
-	// do {
-	// // Process the data:
-	// int id = cursor.getInt(DBAdapter.COL_ROWID);
-	// String name = cursor.getString(DBAdapter.COL_NAME);
-	// String desc = cursor.getString(DBAdapter.COL_DESC);
-	// String price = cursor.getString(DBAdapter.COL_PRICE);
-	// String image = cursor.getString(DBAdapter.COL_IMAGE);
-	//
-	// // Append data to the message:
-	// message += "name=" + name
-	// + desc
-	// +" Price=" + price
-	// + image
-	// +"\n";
-	// } while(cursor.moveToNext());
-	// }
-	//
-	// // Close the cursor to avoid a resource leak.
-	// cursor.close();
-	//
-	// }
+
+	@SuppressWarnings("deprecation")
+	private void poplistview() {
+		Cursor c = myDB.getAllItem();
+
+		// lifetime
+		this.startManagingCursor(c);
+
+		// setup mapping from cursor to view
+
+		String[] fromName = new String[] { DBAdapter.KEY_NAME,
+				DBAdapter.KEY_RESID };
+
+		int[] toViewId = new int[] { R.id.name, R.id.icon };
+
+		// adapter
+		SimpleCursorAdapter myAdapter = new SimpleCursorAdapter(this, // context
+				R.layout.list_object, // row template
+				c, fromName, toViewId);
+
+		ListView list = (ListView) this.findViewById(R.id.itemlist);
+		list.setAdapter(myAdapter);
+		list.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				Cursor c = myDB.getAllItem();
+				Intent in = new Intent(ItemActivity.this, ItemObjectActivity.class);
+				
+			    in.putExtra("_id",arg2+1);
+			    startActivity(in);
+				
+			}
+		});
+		
+	}
+	private void openDB() {
+		myDB = new DBAdapter(this);
+		myDB.open();
+	}
+
+	protected void onDestroy() {
+		super.onDestroy();
+		closeDB();
+	}
+
+	private void closeDB() {
+		myDB.close();
+
+	}
 }

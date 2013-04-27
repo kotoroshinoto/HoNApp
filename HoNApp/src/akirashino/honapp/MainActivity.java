@@ -12,17 +12,14 @@ import android.widget.TabHost;
 /*
  * Steps to using the DB:
  * 1. [DONE] Instantiate the DB Adapter
- * 2. [] Open the DB
- * 3. [] use get, insert, delete, .. to change or call data.
+ * 2. [DONE] Open the DB
+ * 3. [DONE] use get, insert, delete, .. to change or call data.
  * 4. [DONE]Close the DB
  */
 
-/**
- * Demo application to show how to use the built-in SQLite database.
- */
 @SuppressWarnings("deprecation")
 public class MainActivity extends TabActivity {
-
+	
 	private TabHost myTabHost;
 
 	@SuppressWarnings("deprecation")
@@ -42,7 +39,7 @@ public class MainActivity extends TabActivity {
 			myDbHelper.createDataBase();
 
 		} catch (IOException ioe) {
-			//TODO switch to toast message
+			
 			throw new Error("Unable to create database");
 
 		}

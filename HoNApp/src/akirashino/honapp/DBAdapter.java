@@ -1,89 +1,56 @@
 package akirashino.honapp;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-//TODO: Change the package to match your project.
-
-//TO USE:
-//Change the package (at top) to match your project.
-//Search for "TODO", and make the appropriate changes.
-public class DBAdapter {
+public class DBAdapter{
 
 	// ///////////////////////////////////////////////////////////////////
 	// Constants & Data
 	// ///////////////////////////////////////////////////////////////////
-	// For logging:
 	private static final String TAG = "DBAdapter";
 
 	// DB Fields
 	public static final String KEY_ROWID = "_id";
 	public static final int COL_ROWID = 0;
-	/*
-	 * CHANGE 1:
-	 */
-	// TODO: Setup your fields here:
 	public static final String KEY_NAME = "name";
 	public static final String KEY_HERO = "hero";
 	public static final String KEY_RESID = "resid";
 	public static final String PRICE = "price";
 	public static final String IMAGE = "image";
 	public static final String DESC = "desc";
-
-	// TODO: Setup your field numbers here (0 = KEY_ROWID, 1=...)
+	public static final String COST = "cost";
+	public static final String PLACE = "place";
+	
+	
 	public static final int COL_IMAGE = 1;
 	public static final int COL_NAME = 2;
 	public static final int COL_DESC = 3;
 	public static final int COL_PRICE = 4;
 	public static final int COL_HERO = 5;
 	public static final int COL_RESID = 6;
+	public static final int COL_COST = 7;
+	public static final int COL_PLACE = 9;
+	
 	
 
 	public static final String[] HERO_KEYS = new String[] { KEY_ROWID,
 			KEY_NAME, IMAGE, KEY_RESID};
 	public static final String[] IMAGE_KEYS = new String[] { KEY_ROWID, IMAGE};
 	public static final String[] ABILITY_KEYS = new String[] { KEY_ROWID,
-			KEY_NAME, KEY_HERO };
-	public static final String[] ITEM_KEYS = new String[] { KEY_ROWID, KEY_NAME };
+			KEY_NAME, KEY_HERO, DESC, IMAGE, KEY_RESID, COST, PLACE};
+	public static final String[] ITEM_KEYS = new String[] { KEY_ROWID, KEY_NAME, PRICE, DESC, IMAGE, KEY_RESID, };
 
-	// DB info: it's name, and the table we are using (just one).
 	public static final String DATABASE_NAME = "HonData";
 	public static final String DATABASE_TABLE_HERO = "hero";
 	public static final String DATABASE_TABLE_ITEM = "item";
 	public static final String DATABASE_TABLE_ABILITY = "ability";
-	// Track DB version if a new version of your app changes the format.
 	public static final int DATABASE_VERSION = 2;
 
-	// private static final String DATABASE_CREATE_SQL =
-	// "create table " + DATABASE_TABLE
-	// + " (" + KEY_ROWID + " integer primary key autoincrement, "
 
-	/*
-	 * CHANGE 2:
-	 */
-	// TODO: Place your fields here!
-	// + KEY_{...} + " {type} not null"
-	// - Key is the column name you created above.
-	// - {type} is one of: text, integer, real, blob
-	// (http://www.sqlite.org/datatype3.html)
-	// - "not null" means it is a required field (must be given a value).
-	// NOTE: All must be comma separated (end of line!) Last one must have NO
-	// comma!!
-	// + KEY_NAME + " text not null, "
-	// + KEY_STUDENTNUM + " integer not null, "
-	// + KEY_FAVCOLOUR + " string not null"
-
-	// Rest of creation:
-	// + ");";
-
-	// Context of application who uses us.
 	private final Context context;
 
 	private DataBaseHelper myDbHelper;
@@ -102,7 +69,12 @@ public class DBAdapter {
 	// Open the database connection.
 	public DBAdapter open() {
 		db = myDbHelper.getWritableDatabase();
+		//set hero images
 		this.setHeroImageIDs();
+		//set ability images
+		this.setAbilityImageIDs();
+		//set item images
+		this.setItemImageIDs();
 		return this;
 	}
 
@@ -111,14 +83,6 @@ public class DBAdapter {
 		myDbHelper.close();
 	}
 
-	// Add a new set of values to the database.
-
-	// Insert it into the database.
-	// return db.insert(DATABASE_TABLE, null, initialValues);
-
-	// Delete a row from the database, by rowId (primary key)
-
-	// Return all data in the database.
 	public Cursor getAllHero() {
 		String where = null;
 		Cursor c = db.query(true, DATABASE_TABLE_HERO, HERO_KEYS, where, null,
@@ -139,7 +103,7 @@ public class DBAdapter {
 		return c;
 	}
 
-	public Cursor getAllRowsAbility() {
+	public Cursor getAllAbility() {
 		String where = null;
 		Cursor c = db.query(true, DATABASE_TABLE_ABILITY, ABILITY_KEYS, where,
 				null, null, null, null, null);
@@ -149,7 +113,7 @@ public class DBAdapter {
 		return c;
 	}
 
-	public Cursor getAllRowsItem() {
+	public Cursor getAllItem() {
 		String where = null;
 		Cursor c = db.query(true, DATABASE_TABLE_ITEM, ITEM_KEYS, where, null,
 				null, null, null, null);
@@ -170,8 +134,8 @@ public class DBAdapter {
 		return c;
 	}
 
-	public Cursor getRowAbility(long rowId) {
-		String where = KEY_ROWID + "=" + rowId;
+	public Cursor getRowAbility(String hero) {
+		String where = KEY_HERO + "= \"" +hero+"\"";
 		Cursor c = db.query(true, DATABASE_TABLE_ABILITY, ABILITY_KEYS, where,
 				null, null, null, null, null);
 		if (c != null) {
@@ -192,7 +156,6 @@ public class DBAdapter {
 	
 	public void setHeroImageIDs(){
 		Cursor c = this.getAllHero();
-//		ArrayList<String> heroes=new ArrayList<String>();
 		if (c != null){
 			while(!c.isAfterLast()){
 				try {
@@ -200,58 +163,59 @@ public class DBAdapter {
 				    String imgname=c.getString(c.getColumnIndex("image"));
 				    Field field = res.getField(imgname);
 				    int drawableId = field.getInt(null);
-//				    ContentValues vals = new ContentValues();
-//				    vals.put("resid", drawableId);
-				    
-//				    db.update("hero", vals, "image = "+imgname, null);
-				    db.execSQL("update hero set resid=\""+drawableId+"\" where image= \""+imgname+"\"");
+				    db.execSQL("update hero set " +
+				    		"resid=\""+drawableId+"\" where " +
+				    				"image= \""+imgname+"\"");
 				}
 				catch (Exception e) {
 				    Log.e("MyTag", "Failure to get drawable id.", e);
 				}
 				c.moveToNext();
 			}
-		} //log an error testing crap
+		} 
 		
 	}
-	// Change an existing row to be equal to new data.
+	public void setAbilityImageIDs(){
+		Cursor c = this.getAllAbility();
+		if (c != null){
+			while(!c.isAfterLast()){
+				try {
+				    Class res = R.drawable.class;
+				    String imgname=c.getString(c.getColumnIndex("image"));
+				    Field field = res.getField(imgname);
+				    int drawableId = field.getInt(null);
+				    db.execSQL("update ability" +
+				    		" set resid=\""+drawableId+"\" where " +
+				    				"image= \""+imgname+"\"");
+				}
+				catch (Exception e) {
+				    Log.e("MyTag", "Failure to get drawable id.", e);
+				}
+				c.moveToNext();
+			}
+		} 
+		
+	}
+	public void setItemImageIDs(){
+		Cursor c = this.getAllItem();
+		if (c != null){
+			while(!c.isAfterLast()){
+				try {
+				    Class res = R.drawable.class;
+				    String imgname=c.getString(c.getColumnIndex("image"));
+				    Field field = res.getField(imgname);
+				    int drawableId = field.getInt(null);
+				    db.execSQL("update item set " +
+				    		"resid=\""+drawableId+"\" where " +
+				    				"image= \""+imgname+"\"");
+				}
+				catch (Exception e) {
+				    Log.e("MyTag", "Failure to get drawable id.", e);
+				}
+				c.moveToNext();
+			}
+		} 
+		
+	}
 
-	// Insert it into the database.
-	// return db.update(DATABASE_TABLE, newValues, where, null) != 0;
-	// }
-
-	// ///////////////////////////////////////////////////////////////////
-	// Private Helper Classes:
-	// ///////////////////////////////////////////////////////////////////
-
-	/**
-	 * Private class which handles database creation and upgrading. Used to
-	 * handle low-level database access.
-	 */
-	// private static class DatabaseHelper extends SQLiteOpenHelper
-	// {
-	//
-	//
-	// DatabaseHelper(Context context) {
-	// super(context, DATABASE_NAME, null, DATABASE_VERSION);
-	// }
-	//
-	// @Override
-	// public void onCreate(SQLiteDatabase _db) {
-	// _db.execSQL(DATABASE_CREATE_SQL);
-	// }
-	//
-	// @Override
-	// public void onUpgrade(SQLiteDatabase _db, int oldVersion, int newVersion)
-	// {
-	// Log.w(TAG, "Upgrading application's database from version " + oldVersion
-	// + " to " + newVersion + ", which will destroy all old data!");
-	//
-	// // Destroy old database:
-	// _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE);
-	//
-	// // Recreate new database:
-	// onCreate(_db);
-	// }
-	// }
 }
