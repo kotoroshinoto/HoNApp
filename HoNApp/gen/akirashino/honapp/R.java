@@ -120,9 +120,10 @@ public final class R {
         public static final int iconQ=0x7f090004;
         public static final int iconR=0x7f090010;
         public static final int iconW=0x7f090007;
-        public static final int icon_item=0x7f090015;
-        public static final int item_name=0x7f090018;
-        public static final int item_text=0x7f090017;
+        public static final int item_icon=0x7f090015;
+        public static final int item_name=0x7f090017;
+        public static final int item_price=0x7f090016;
+        public static final int item_text=0x7f090018;
         public static final int item_view=0x7f09001b;
         public static final int itemlist=0x7f090000;
         public static final int name=0x7f09001a;
@@ -130,7 +131,6 @@ public final class R {
         public static final int nameQ=0x7f090003;
         public static final int nameR=0x7f09000f;
         public static final int nameW=0x7f090009;
-        public static final int price=0x7f090016;
         public static final int scrollView1=0x7f090001;
         public static final int textE=0x7f09000a;
         public static final int textQ=0x7f090005;
